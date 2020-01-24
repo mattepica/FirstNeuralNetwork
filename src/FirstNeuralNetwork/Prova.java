@@ -21,7 +21,7 @@ public class Prova {
 		
 		List<Double> costi = new ArrayList<Double>();
 		List<ArrayList<Double>> myList = new ArrayList<ArrayList<Double>>();
-		File csvFile = new File("data.csv");
+		File csvFile = new File("train.csv");
 		BufferedReader csvReader = new BufferedReader(new FileReader(csvFile));
 		String row;
 		try {
@@ -80,7 +80,7 @@ public class Prova {
 			}
 		}
 		myList.clear();
-		csvFile = new File("data2.csv");
+		csvFile = new File("test.csv");
 		csvReader = new BufferedReader(new FileReader(csvFile));
 		try {
 			while ((row = csvReader.readLine()) != null) {
