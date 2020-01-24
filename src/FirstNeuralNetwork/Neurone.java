@@ -113,7 +113,7 @@ public class Neurone {
 
 	@Override
 	public String toString() {
-		return "Percettrone [lRate=" + lRate + ", bias=" + bias + ", w=" + Arrays.toString(w) + "]";
+		return "Neurone [lRate=" + lRate + ", bias=" + bias + ", w=" + Arrays.toString(w) + "]";
 	}
 
 }

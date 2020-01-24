@@ -15,7 +15,7 @@ public class Prova {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		int feature = 30; //setting per scegliere se usare tutte e 30 le features o solamente le 2 piu importanti
+		int features = 30; //setting per scegliere se usare tutte e 30 le features o solamente le 2 piu importanti
 		double lRate = 0.01;
 		double fattore = 0.01; // usato per trasformare il set di dati
 		
@@ -42,7 +42,7 @@ public class Prova {
 			e1.printStackTrace();
 		}
 		
-		Neurone p = new Neurone(feature, lRate);
+		Neurone p = new Neurone(features, lRate);
 
 		System.out.println(p.toString());
 		Random r = new Random();
@@ -50,7 +50,7 @@ public class Prova {
 
 		long iterazioni = 10000; // numero di iterazioni
 
-		if (feature == 30) {
+		if (features == 30) {
 			for (int i = 0; i < iterazioni; i++) {
 
 				int rd = r.nextInt(myList.size());
@@ -80,7 +80,7 @@ public class Prova {
 			}
 		}
 		myList.clear();
-		csvFile = new File("test.csv");
+		csvFile = new File("test.csv"); //si dia per noto la presenza di 66 tumori maligni nel file.
 		csvReader = new BufferedReader(new FileReader(csvFile));
 		try {
 			while ((row = csvReader.readLine()) != null) {
@@ -101,7 +101,7 @@ public class Prova {
 		}
 
 		int mal = 0, ben = 0;
-		if (feature == 30) {
+		if (features == 30) {
 			for (int i = 0; i < myList.size(); i++) {
 
 				for (int j = 1; j < myList.get(i).size(); j++) {
@@ -128,7 +128,7 @@ public class Prova {
 		System.out.println(p.toString());
 		System.out.println("Train: "+iterazioni);
 		System.out.println("Lr: "+lRate);
-		System.out.println("Feature: "+feature);
+		System.out.println("Feature: "+features);
 		System.out.println("Benigni " + ben + " maligni " + mal + "; errati il " + (int)Math.sqrt(Math.pow((((mal - 66) * 100) / 270),2)) + "%"+"->" +(int)Math.sqrt(Math.pow((mal-66),2)));
 		GraphPanel a = new GraphPanel(costi);
 		a.setPreferredSize(new Dimension(1200, 600));
