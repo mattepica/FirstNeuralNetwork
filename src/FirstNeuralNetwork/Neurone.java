@@ -44,7 +44,7 @@ public class Neurone {
 
 		double dpred_dz = dSigmoide(z); 			// derivata parziale della previsione rispetto a z
 
-		double dz_db = 1; 							// derivata parziale di z rispetto a b
+		double dz_db = 1; 							// derivata parziale di z rispetto a bias
 
 		double dcost_dz = dcost_dpred * dpred_dz; 	// derivata parziale di z rispetto alla previsione (uso la regola della catena)
 
