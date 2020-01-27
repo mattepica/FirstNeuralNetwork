@@ -36,15 +36,15 @@ public class Neurone {
 		/*
 		 * il target è il mio obiettivo nell'addestramento del neurone
 		 */
-		double pred = sigmoide(z); 					// normalizzo la previsione
+		double pred = sigmoide(z); 			// normalizzo la previsione
 
 		double cost = Math.pow(pred - target, 2); 	// costo del punto
 
 		double dcost_dpred = 2 * (pred - target); 	// derivata parziale del costo rispetto alla previsione
 
-		double dpred_dz = dSigmoide(z); 			// derivata parziale della previsione rispetto a z
+		double dpred_dz = dSigmoide(z); 		// derivata parziale della previsione rispetto a z
 
-		double dz_db = 1; 							// derivata parziale di z rispetto a bias
+		double dz_db = 1; 				// derivata parziale di z rispetto a bias
 
 		double dcost_dz = dcost_dpred * dpred_dz; 	// derivata parziale di z rispetto alla previsione (uso la regola della catena)
 
