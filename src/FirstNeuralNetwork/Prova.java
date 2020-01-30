@@ -49,7 +49,7 @@ public class Prova {
 		Random r = new Random();
 		double[] point = new double[30];
 
-		
+		/*fase di addestramento */
 
 		if (features == 30) {
 			for (int i = 0; i < iterazioni; i++) {
@@ -67,6 +67,7 @@ public class Prova {
 				}
 			}
 		} else {
+			/*Solo per 2 features */
 			for (int i = 0; i < iterazioni; i++) {
 				int rd = r.nextInt(myList.size());
 				point[0] = myList.get(rd).get(11) * fattore;
@@ -81,8 +82,10 @@ public class Prova {
 			}
 		}
 		
+		/*fase di test */
+		
 		myList.clear();
-		csvFile = new File("test.csv"); //si dia per noto la presenza di 66 tumori maligni nel file.
+		csvFile = new File("test.csv");
 		csvReader = new BufferedReader(new FileReader(csvFile));
 		try {
 			while ((row = csvReader.readLine()) != null) {
@@ -118,6 +121,7 @@ public class Prova {
 				}
 			}
 		} else {
+			/*Solo per 2 features */
 			for (int i = 0; i < myList.size(); i++) {
 				point[0] = myList.get(i).get(11) * fattore;
 				point[1] = myList.get(i).get(28) * fattore;
@@ -132,6 +136,7 @@ public class Prova {
 				}
 			}
 		}
+		/*risultati */
 		System.out.println(p.toString());
 		System.out.println("Train: "+iterazioni);
 		System.out.println("Lr: "+lRate);
