@@ -15,17 +15,18 @@ public class Prova {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		int features = 2; //setting per scegliere se usare tutte e 30 le features o solamente le 2 piu importanti
-		double lRate = 0.01;
-		double fattore = 0.1; // usato per trasformare il set di dati
-		int iterazioni = 1000000; // numero di iterazioni
+		int features = 30; // setting per scegliere features usare
+		double lRate = 0.1; // learning rate
+		double fattore = 0.01; // usato per trasformare il set di dati
+		int iterazioni = 10000; // numero di iterazioni
 		List<Double> costi = new ArrayList<Double>();
+		
 		List<ArrayList<Double>> myList = new ArrayList<ArrayList<Double>>();
 		File csvFile = new File("train.csv");
 		BufferedReader csvReader = new BufferedReader(new FileReader(csvFile));
 		String row;
 		try {
-			while ((row = csvReader.readLine()) != null) { //leggo il file
+			while ((row = csvReader.readLine()) != null) { // leggo il file
 				String[] data = row.split(",");
 				List<Double> lineD = new ArrayList<>();
 				for (int i = 0; i < data.length; i++) {
@@ -41,49 +42,29 @@ public class Prova {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-		//neurone
+
+		// neurone
 		Neurone p = new Neurone(features, lRate);
 
 		System.out.println(p.toString());
+
+		/* fase di pprendimento */
 		Random r = new Random();
 		double[] point = new double[30];
-
-		/*fase di addestramento */
-
-		if (features == 30) {
-			for (int i = 0; i < iterazioni; i++) {
-
-				int rd = r.nextInt(myList.size());
-
-				for (int j = 1; j < myList.get(rd).size(); j++) {
-					point[j - 1] = myList.get(rd).get(j) * fattore;
-				}
-				if (i % 100 == 0) {
-					double a = p.train(point, myList.get(rd).get(0));
-					costi.add(a);
-				} else {
-					p.train(point, myList.get(rd).get(0)); //addestro il neurone
-				}
+		for (int i = 0; i < iterazioni; i++) {
+			int rd = r.nextInt(myList.size());
+			for (int j = 1; j < myList.get(rd).size(); j++) {
+				point[j - 1] = myList.get(rd).get(j) * fattore;
 			}
-		} else {
-			/*Solo per 2 features */
-			for (int i = 0; i < iterazioni; i++) {
-				int rd = r.nextInt(myList.size());
-				point[0] = myList.get(rd).get(11) * fattore;
-				point[1] = myList.get(rd).get(28) * fattore;
-
-				if (i % 10000 == 0) {
-					double a = p.train(point, myList.get(rd).get(0));
-					costi.add(a);
-				} else {
-					p.train(point, myList.get(rd).get(0));
-				}
+			if (i % 100 == 0) {
+				double a = p.train(point, myList.get(rd).get(0));
+				costi.add(a);
+			} else {
+				p.train(point, myList.get(rd).get(0)); // addestro il neurone
 			}
 		}
-		
-		/*fase di test */
-		
+
+		/* fase di test */
 		myList.clear();
 		csvFile = new File("test.csv");
 		csvReader = new BufferedReader(new FileReader(csvFile));
@@ -104,48 +85,36 @@ public class Prova {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		int positiveCounter=0;
-		int mal = 0, ben = 0;
-		if (features == 30) {
-			for (int i = 0; i < myList.size(); i++) {
-				if(myList.get(i).get(0)==1){
-					positiveCounter++;
-				}
-				for (int j = 1; j < myList.get(i).size(); j++) {
-					point[j - 1] = myList.get(i).get(j) * fattore;
-				}
-				if (p.test(point, myList.get(i).get(0))) {
-					mal++;
-				} else {
-					ben++;
-				}
+		int positiveCounter = 0; //utilizzato per fare percentuali
+		int mal = 0, ben = 0;  //contatori
+		
+		for (int i = 0; i < myList.size(); i++) {
+			if (myList.get(i).get(0) == 1) {
+				positiveCounter++;
 			}
-		} else {
-			/*Solo per 2 features */
-			for (int i = 0; i < myList.size(); i++) {
-				point[0] = myList.get(i).get(11) * fattore;
-				point[1] = myList.get(i).get(28) * fattore;
-				if(myList.get(i).get(0)==1){
-					positiveCounter++;
-				}
-
-				if (p.test(point, myList.get(i).get(0))) {
-					mal++;
-				} else {
-					ben++;
-				}
+			for (int j = 1; j < myList.get(i).size(); j++) {
+				point[j - 1] = myList.get(i).get(j) * fattore;
+			}
+			if (p.test(point, myList.get(i).get(0))) {
+				mal++;
+			} else {
+				ben++;
 			}
 		}
-		/*risultati */
+		/* risultati su grafico */
 		System.out.println(p.toString());
-		System.out.println("Train: "+iterazioni);
-		System.out.println("Lr: "+lRate);
-		System.out.println("Feature: "+features);
-		System.out.println("Benigni: " + ben + ", maligni: " + mal + ". Casi analizzati: "+myList.size());
-		System.out.println("Predizioni errate totali "+Math.abs((positiveCounter-mal)-((myList.size()-positiveCounter)-ben))+" su "+myList.size()+" ~"
-		+Math.abs((((positiveCounter-mal)-((myList.size()-positiveCounter)-ben))*100)/myList.size()) +"%" );
-		System.out.println( "Maligni errati:" +Math.abs(positiveCounter-mal)+"/" + positiveCounter + " ovvero ~" +
-		Math.abs((((mal - positiveCounter) * 100) /positiveCounter)) +"%");
+		System.out.println("Train: " + iterazioni);
+		System.out.println("Lr: " + lRate);
+		System.out.println("Feature: " + features);
+		System.out.println("Benigni: " + ben + ", maligni: " + mal + ". Casi analizzati: " + myList.size());
+		System.out.println("Predizioni errate totali "
+				+ Math.abs((positiveCounter - mal) - ((myList.size() - positiveCounter) - ben)) + " su " + myList.size()
+				+ " ~"
+				+ Math.abs(
+						(((positiveCounter - mal) - ((myList.size() - positiveCounter) - ben)) * 100) / myList.size())
+				+ "%");
+		System.out.println("Maligni errati:" + Math.abs(positiveCounter - mal) + "/" + positiveCounter + " ovvero ~"
+				+ Math.abs((((mal - positiveCounter) * 100) / positiveCounter)) + "%");
 		GraphPanel a = new GraphPanel(costi);
 		a.setPreferredSize(new Dimension(1200, 600));
 		JFrame frame = new JFrame("Errore quadratico");
@@ -156,4 +125,3 @@ public class Prova {
 		frame.setVisible(true);
 	}
 }
-
