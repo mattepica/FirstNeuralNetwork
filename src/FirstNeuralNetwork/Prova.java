@@ -48,7 +48,7 @@ public class Prova {
 
 		System.out.println(p.toString());
 
-		/* fase di pprendimento */
+		/* fase di apprendimento */
 		Random r = new Random();
 		double[] point = new double[30];
 		for (int i = 0; i < iterazioni; i++) {
